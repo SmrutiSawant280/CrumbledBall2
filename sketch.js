@@ -1,39 +1,44 @@
-var canvas,backgroundImg;
-var gameState = 0,playerCount,form,player,game;
-var viennaImg,switzerlandImg,edinburghImg,costabravaImg,nycImg,distance = 0,
-mauritiusImg,indiaImg;
-var i,c;
-var allPlayers;
-var button1;
-var database,position;
 
-function preload(){
-    indiaImg = loadImage("india.jpg");
-    mauritiusImg = loadImage("mauritius.jpg");
-    costabravaImg = loadImage("costaBrava.jpg");
-    edinburghImg = loadImage("edinburgh.png");
-    nycImg = loadImage("nyc.jpg");
-    viennaImg = loadImage("vienna.jpg");
-    switzerlandImg = loadImage("switzerland.jpg");
-}
-function setup(){
-    createCanvas(displayWidth-20,displayHeight-30);
-    database = firebase.database();
-    game = new Game();
-    game.getState();
-    game.start();
+const Engine = Matter.Engine;
+const World = Matter.World;
+const Bodies = Matter.Bodies;
+const Body = Matter.Body;
+const ball;
+
+
+
+function setup() {
+	createCanvas(1600,700);
+
+
+	engine = Engine.create();
+	world = engine.world;
+
+	//Create the Bodies Here.
+    ground = new Ground(width/2,670,width,20);
+    ball = new Ball(200,450,40);
+    //ball.addImage("paper.png");
+    box = new Box(1200,650);
+	Engine.run(engine);
+  
 }
 
-function draw(){
-    if(playerCount === 1){
-        game.update(1);
-    } 
-    if(gameState === 1){
-        clear();
-        game.play();
-    }
-    if(gameState === 2){
-        game.end();
-    }
+
+function draw() {
+  rectMode(CENTER);
+  background(0);
+  
+  ground.display();
+  ball.display();
+  box.display();
+ 
+ 
 }
+function keyPressed(){
+  if (keyCode === UP_ARROW){
+    Matter. Body.applyForce(ball.body,ball.body.position,{x : 85,y : -85});
+  }
+}
+
+
 
